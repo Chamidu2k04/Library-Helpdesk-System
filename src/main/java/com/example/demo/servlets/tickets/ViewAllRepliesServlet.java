@@ -1,4 +1,3 @@
-//show all replies in admin
 package com.example.demo.servlets.tickets;
 
 import com.example.demo.utils.DBConnection;
@@ -8,7 +7,7 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;
-//show All Ticket Replies in admin
+
 @WebServlet("/ViewAllRepliesServlet")
 public class ViewAllRepliesServlet extends HttpServlet {
 

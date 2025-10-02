@@ -68,7 +68,7 @@
     <a href="AdminRequestsServlet"><i class="fas fa-plus-circle"></i> Manage request resources</a>
     <a href="listFAQAdmin.jsp"><i class="fas fa-plus-circle"></i> Manage FAQ</a>
     <a href="ViewAllRepliesServlet"><i class="fas fa-hourglass-half"></i> Replied Tickets</a>
-    <a href="feedbacks.jsp?type=solved"><i class="fas fa-check-circle"></i> Feedbacks</a>
+    <a href="FeedbackListServlet"><i class="fas fa-check-circle"></i> Feedbacks</a>
     <a href="add-staff.jsp"><i class="fas fa-users"></i> Add Staffs</a>
     <a href="manage-users" class="get-started-btn"><i class="fas fa-play-circle"></i> Manage Users</a>
     <a href="profile.jsp"><i class="fas fa-cog"></i> Profile Settings</a>

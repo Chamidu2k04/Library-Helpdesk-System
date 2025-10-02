@@ -11,53 +11,57 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            background-color: #f4f6f9;
+            background: #181a20;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #eaeaea;
         }
         .ticket-list {
             height: 100%;
             overflow-y: auto;
-            background: #fff;
-            border-right: 1px solid #ddd;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            background: #23272f;
+            border-right: 1px solid #222;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
         }
         .ticket-item {
             cursor: pointer;
             padding: 18px 20px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #222;
             transition: background 0.2s, box-shadow 0.2s;
-            border-radius: 8px;
+            border-radius: 10px;
             margin: 8px 12px;
+            background: #23272f;
+            color: #eaeaea;
         }
         .ticket-item:hover {
-            background-color: #e9ecef;
-            box-shadow: 0 2px 8px rgba(51,181,229,0.08);
+            background-color: #2c313c;
+            box-shadow: 0 2px 8px rgba(51,181,229,0.13);
         }
         .ticket-item strong {
             display: block;
-            color: #0d6efd;
+            color: #33b5e5;
             font-size: 16px;
         }
         .ticket-item small {
-            color: #888;
+            color: #b0b0b0;
             font-size: 13px;
         }
         .ticket-details {
-            background: #fff;
+            background: #23272f;
             height: 100%;
             display: flex;
             flex-direction: column;
             padding: 32px 28px 24px 28px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
             overflow-y: auto;
+            border-radius: 18px;
         }
         .ticket-header {
-            background: linear-gradient(90deg,#0d6efd 60%,#33b5e5 100%);
+            background: linear-gradient(90deg,#33b5e5 60%,#0d6efd 100%);
             color: #fff;
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 18px 24px;
             margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(51,181,229,0.12);
+            box-shadow: 0 2px 8px rgba(51,181,229,0.18);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -77,17 +81,18 @@
         .description-box {
             height: 300px;
             resize: none;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 18px;
             font-size: 15px;
-            background-color: #f8f9fa;
+            background-color: #181a20;
+            color: #eaeaea;
             width: 100%;
-            border: 1px solid #e2e6ea;
+            border: 1px solid #333;
             margin-bottom: 18px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.12);
         }
         .reply-box {
-            border-top: 1px solid #e2e6ea;
+            border-top: 1px solid #333;
             padding-top: 14px;
             margin-top: 10px;
         }
@@ -95,7 +100,38 @@
             font-size: 15px;
             font-weight: 500;
             border-radius: 8px;
-            box-shadow: 0 1px 4px rgba(51,181,229,0.08);
+            box-shadow: 0 1px 4px rgba(51,181,229,0.13);
+        }
+        .btn-primary {
+            background: linear-gradient(90deg,#33b5e5 60%,#0d6efd 100%);
+            border: none;
+        }
+        .btn-secondary {
+            background: #23272f;
+            color: #eaeaea;
+            border: 1px solid #33b5e5;
+        }
+        .btn-secondary:hover {
+            background: #181a20;
+            color: #33b5e5;
+        }
+        .table {
+            background: #23272f;
+            color: #eaeaea;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table th, .table td {
+            background: #23272f;
+            color: #eaeaea;
+            border-color: #333;
+        }
+        .bg-dark {
+            background: #181a20 !important;
+            color: #33b5e5 !important;
+        }
+        .text-muted {
+            color: #b0b0b0 !important;
         }
         @media (max-width: 991.98px) {
             .ticket-list { height: auto; min-height: 200px; }
@@ -111,15 +147,18 @@
             <div class="ticket-list h-100">
                 <div class="p-3 bg-dark text-white fw-bold">All Tickets</div>
 
+                <!-- Back Buttons -->
 
-                <a href="javascript:history.back()" class="btn btn-secondary btn-sm text-white m-2">⬅ Go Back</a>
+                <a class="btn btn-dashboard" href="admin-dashboard">🏠  Back to Dashboard</a>
 
                 <%
                     List<Map<String,String>> tickets = (List<Map<String,String>>) request.getAttribute("tickets");
                     if(tickets != null && !tickets.isEmpty()){
                         for(Map<String,String> ticket : tickets){
+                            String ticketStatus = ticket.get("status");
+                            String itemStyle = "new".equalsIgnoreCase(ticketStatus) ? "color:#ff3b3b;" : "";
                 %>
-                <div class="ticket-item" onclick="window.location.href='ManageTicketsServlet?id=<%=ticket.get("id")%>'">
+                <div class="ticket-item" style="<%= itemStyle %>" onclick="window.location.href='ManageTicketsServlet?id=<%=ticket.get("id")%>'">
                     <strong><%= ticket.get("username") %> - <%= ticket.get("email") %></strong>
                     <small>Category: <%= ticket.get("category") %> | Status: <%= ticket.get("status") %></small>
                 </div>

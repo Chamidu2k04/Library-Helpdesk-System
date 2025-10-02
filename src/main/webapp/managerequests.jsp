@@ -7,6 +7,7 @@
     List<Map<String,String>> approvedRequests = new ArrayList<>();
     List<Map<String,String>> rejectedRequests = new ArrayList<>();
 
+//validate status
     if (requests != null) {
         for (Map<String,String> req : requests) {
             String status = req.get("status");
@@ -156,7 +157,66 @@
         .pending:hover {
             background: #d4ac0d;
         }
+
+        /* Tab Bar Styles */
+        .tab-bar {
+            display: flex;
+            gap: 0;
+            margin-top: 32px;
+            margin-bottom: 0;
+            border-radius: 12px 12px 0 0;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.07);
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 16px 0;
+            font-size: 17px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            background: #ecf0f1;
+            color: #34495e;
+            transition: background 0.2s, color 0.2s;
+        }
+        .tab-btn.active.pending {
+            background: #f1c40f;
+            color: #23272f;
+        }
+        .tab-btn.active.approved {
+            background: #27ae60;
+            color: #fff;
+        }
+        .tab-btn.active.rejected {
+            background: #e74c3c;
+            color: #fff;
+        }
+        .tab-btn:not(.active):hover {
+            background: #dfe6e9;
+        }
+        .tab-section {
+            display: none;
+        }
+        .tab-section.active {
+            display: block;
+        }
     </style>
+    <script>
+        function showTab(tab) {
+            document.getElementById('pendingTab').classList.remove('active');
+            document.getElementById('approvedTab').classList.remove('active');
+            document.getElementById('rejectedTab').classList.remove('active');
+            document.getElementById('pendingSection').classList.remove('active');
+            document.getElementById('approvedSection').classList.remove('active');
+            document.getElementById('rejectedSection').classList.remove('active');
+            document.getElementById(tab + 'Tab').classList.add('active');
+            document.getElementById(tab + 'Section').classList.add('active');
+        }
+        window.onload = function() {
+            showTab('pending');
+        }
+    </script>
 </head>
 <body>
 
@@ -169,108 +229,127 @@
         <h2><%= request.getAttribute("pendingCount") != null ? request.getAttribute("pendingCount") : "-" %></h2>
         <p>Pending</p>
     </div>
-    <div class="card">
-        <h2><%= request.getAttribute("approvedCount") != null ? request.getAttribute("approvedCount") : "-" %></h2>
-        <p>Approved</p>
+    <div class="card" style="border: 2px solid #27ae60; background: #eafaf1;">
+        <h2 style="color:#27ae60;"><%= request.getAttribute("approvedCount") != null ? request.getAttribute("approvedCount") : "-" %></h2>
+        <p style="color:#219150;">Approved</p>
     </div>
-    <div class="card">
-        <h2><%= request.getAttribute("rejectedCount") != null ? request.getAttribute("rejectedCount") : "-" %></h2>
-        <p>Rejected</p>
+    <div class="card" style="border: 2px solid #e74c3c; background: #fdeaea;">
+        <h2 style="color:#e74c3c;"><%= request.getAttribute("rejectedCount") != null ? request.getAttribute("rejectedCount") : "-" %></h2>
+        <p style="color:#c0392b;">Rejected</p>
     </div>
 </div>
 
-<!-- Pending -->
-<h2 class="section-title">⏳ Pending Requests</h2>
-<table>
-    <tr>
-        <th>ID</th><th>Title</th><th>Author</th><th>Type</th><th>Justification</th><th>Actions</th>
-    </tr>
-    <%
-        for (Map<String,String> req : pendingRequests) {
-    %>
-    <tr>
-        <td><%= req.get("id") %></td>
-        <td><%= req.get("title") %></td>
-        <td><%= req.get("author") %></td>
-        <td><%= req.get("type") %></td>
-        <td><%= req.get("justification") %></td>
-        <td>
-            <form action="ApproveRejectServlet" method="post" style="display:inline;">
-                <input type="hidden" name="id" value="<%= req.get("id") %>">
-                <input type="hidden" name="action" value="approve">
-                <button type="submit" class="btn approve">Approve</button>
-            </form>
-            <form action="ApproveRejectServlet" method="post" style="display:inline;">
-                <input type="hidden" name="id" value="<%= req.get("id") %>">
-                <input type="hidden" name="action" value="reject">
-                <button type="submit" class="btn reject">Reject</button>
-            </form>
-        </td>
-    </tr>
-    <% } %>
-</table>
+<!-- Tab Bar -->
+<div class="tab-bar">
+    <button id="pendingTab" class="tab-btn pending" onclick="showTab('pending')">
+        ⏳ Pending (<%= pendingRequests.size() %>)
+    </button>
+    <button id="approvedTab" class="tab-btn approved" onclick="showTab('approved')">
+        ✅ Approved (<%= approvedRequests.size() %>)
+    </button>
+    <button id="rejectedTab" class="tab-btn rejected" onclick="showTab('rejected')">
+        ❌ Rejected (<%= rejectedRequests.size() %>)
+    </button>
+</div>
 
-<!-- Approved -->
-<h2 class="section-title">✅ Approved Requests</h2>
-<table>
-    <tr>
-        <th>ID</th><th>Title</th><th>Author</th><th>Type</th><th>Justification</th><th>Actions</th>
-    </tr>
-    <%
-        for (Map<String,String> req : approvedRequests) {
-    %>
-    <tr>
-        <td><%= req.get("id") %></td>
-        <td><%= req.get("title") %></td>
-        <td><%= req.get("author") %></td>
-        <td><%= req.get("type") %></td>
-        <td><%= req.get("justification") %></td>
-        <td>
-            <form action="ApproveRejectServlet" method="post" style="display:inline;">
-                <input type="hidden" name="id" value="<%= req.get("id") %>">
-                <input type="hidden" name="action" value="pending">
-                <button type="submit" class="btn pending">Move to Pending</button>
-            </form>
-            <form action="ApproveRejectServlet" method="post" style="display:inline;">
-                <input type="hidden" name="id" value="<%= req.get("id") %>">
-                <input type="hidden" name="action" value="reject">
-                <button type="submit" class="btn reject">Reject</button>
-            </form>
-        </td>
-    </tr>
-    <% } %>
-</table>
+<!-- Pending Section -->
+<div id="pendingSection" class="tab-section">
+    <h2 class="section-title">⏳ Pending Requests</h2>
+    <table>
+        <tr>
+            <th>ID</th><th>Title</th><th>Author</th><th>Type</th><th>Justification</th><th>Actions</th>
+        </tr>
+        <%
+            for (Map<String,String> req : pendingRequests) {
+        %>
+        <tr>
+            <td><%= req.get("id") %></td>
+            <td><%= req.get("title") %></td>
+            <td><%= req.get("author") %></td>
+            <td><%= req.get("type") %></td>
+            <td><%= req.get("justification") %></td>
+            <td>
+                <form action="ApproveRejectServlet" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="<%= req.get("id") %>">
+                    <input type="hidden" name="action" value="approve">
+                    <button type="submit" class="btn approve">Approve</button>
+                </form>
+                <form action="ApproveRejectServlet" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="<%= req.get("id") %>">
+                    <input type="hidden" name="action" value="reject">
+                    <button type="submit" class="btn reject">Reject</button>
+                </form>
+            </td>
+        </tr>
+        <% } %>
+    </table>
+</div>
 
-<!-- Rejected -->
-<h2 class="section-title">❌ Rejected Requests</h2>
-<table>
-    <tr>
-        <th>ID</th><th>Title</th><th>Author</th><th>Type</th><th>Justification</th><th>Actions</th>
-    </tr>
-    <%
-        for (Map<String,String> req : rejectedRequests) {
-    %>
-    <tr>
-        <td><%= req.get("id") %></td>
-        <td><%= req.get("title") %></td>
-        <td><%= req.get("author") %></td>
-        <td><%= req.get("type") %></td>
-        <td><%= req.get("justification") %></td>
-        <td>
-            <form action="ApproveRejectServlet" method="post" style="display:inline;">
-                <input type="hidden" name="id" value="<%= req.get("id") %>">
-                <input type="hidden" name="action" value="pending">
-                <button type="submit" class="btn pending">Move to Pending</button>
-            </form>
-            <form action="ApproveRejectServlet" method="post" style="display:inline;">
-                <input type="hidden" name="id" value="<%= req.get("id") %>">
-                <input type="hidden" name="action" value="approve">
-                <button type="submit" class="btn approve">Approve</button>
-            </form>
-        </td>
-    </tr>
-    <% } %>
-</table>
+<!-- Approved Section -->
+<div id="approvedSection" class="tab-section">
+    <h2 class="section-title">✅ Approved Requests</h2>
+    <table>
+        <tr>
+            <th>ID</th><th>Title</th><th>Author</th><th>Type</th><th>Justification</th><th>Actions</th>
+        </tr>
+        <%
+            for (Map<String,String> req : approvedRequests) {
+        %>
+        <tr>
+            <td><%= req.get("id") %></td>
+            <td><%= req.get("title") %></td>
+            <td><%= req.get("author") %></td>
+            <td><%= req.get("type") %></td>
+            <td><%= req.get("justification") %></td>
+            <td>
+                <form action="ApproveRejectServlet" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="<%= req.get("id") %>">
+                    <input type="hidden" name="action" value="pending">
+                    <button type="submit" class="btn pending">Move to Pending</button>
+                </form>
+                <form action="ApproveRejectServlet" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="<%= req.get("id") %>">
+                    <input type="hidden" name="action" value="reject">
+                    <button type="submit" class="btn reject">Reject</button>
+                </form>
+            </td>
+        </tr>
+        <% } %>
+    </table>
+</div>
+
+<!-- Rejected Section -->
+<div id="rejectedSection" class="tab-section">
+    <h2 class="section-title">❌ Rejected Requests</h2>
+    <table>
+        <tr>
+            <th>ID</th><th>Title</th><th>Author</th><th>Type</th><th>Justification</th><th>Actions</th>
+        </tr>
+        <%
+            for (Map<String,String> req : rejectedRequests) {
+        %>
+        <tr>
+            <td><%= req.get("id") %></td>
+            <td><%= req.get("title") %></td>
+            <td><%= req.get("author") %></td>
+            <td><%= req.get("type") %></td>
+            <td><%= req.get("justification") %></td>
+            <td>
+                <form action="ApproveRejectServlet" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="<%= req.get("id") %>">
+                    <input type="hidden" name="action" value="pending">
+                    <button type="submit" class="btn pending">Move to Pending</button>
+                </form>
+                <form action="ApproveRejectServlet" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="<%= req.get("id") %>">
+                    <input type="hidden" name="action" value="approve">
+                    <button type="submit" class="btn approve">Approve</button>
+                </form>
+            </td>
+        </tr>
+        <% } %>
+    </table>
+</div>
 
 </body>
 </html>

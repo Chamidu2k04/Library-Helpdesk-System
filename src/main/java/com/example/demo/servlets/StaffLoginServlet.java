@@ -21,7 +21,7 @@ public class StaffLoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
-            response.sendRedirect("staffLogin.jsp?error=Please+enter+email+and+password");
+            response.sendRedirect("stafflogin.jsp?error=Please+enter+email+and+password");
             return;
         }
 
@@ -49,14 +49,14 @@ public class StaffLoginServlet extends HttpServlet {
                         response.sendRedirect("staffdashboard.jsp");
                     } else {
                         // Login failed
-                        response.sendRedirect("staffLogin.jsp?error=Invalid+email+or+password");
+                        response.sendRedirect("stafflogin.jsp?error=Invalid+email+or+password");
                     }
                 }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("staffLogin.jsp?error=Database+error");
+            response.sendRedirect("stafflogin.jsp?error=Database+error");
         }
     }
 }

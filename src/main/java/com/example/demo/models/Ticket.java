@@ -10,6 +10,10 @@ public class Ticket {
     private String client;
     private String status;
 
+    public Ticket(String hashtag, String problemOfInstallation, String product, String s, String johnDoe, String pending) {
+
+    }
+
     public Ticket(int id, String title, String department, LocalDate date, String client, String status) {
         this.id = id;
         this.title = title;

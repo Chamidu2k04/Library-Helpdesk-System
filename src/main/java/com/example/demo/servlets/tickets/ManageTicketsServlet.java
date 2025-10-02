@@ -1,5 +1,3 @@
-//manage ticket in admin dashboard
-
 package com.example.demo.servlets.tickets;
 
 import com.example.demo.utils.DBConnection;
@@ -65,7 +63,7 @@ public class ManageTicketsServlet extends HttpServlet {
             request.setAttribute("error", "⚠ Database error: " + e.getMessage());
         }
 
-        // Message history (empty initially)
+        // Message history
         List<String> messages = new ArrayList<>();
 
         // Pass data to JSP

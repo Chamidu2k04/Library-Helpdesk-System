@@ -1,5 +1,3 @@
-//submit ticket
-
 package com.example.demo.servlets.tickets;
 
 import com.example.demo.utils.DBConnection;

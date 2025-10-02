@@ -1,6 +1,6 @@
 package com.example.demo.servlets.resources;
 
-
+//update Resource
 
 import com.example.demo.utils.DBConnection;
 import jakarta.servlet.ServletException;
@@ -22,11 +22,13 @@ public class ApproveRejectServlet extends HttpServlet {
         String idStr = request.getParameter("id");
         String action = request.getParameter("action");
         String newStatus = null;
-
+//validaion
         if ("approve".equalsIgnoreCase(action)) {
             newStatus = "Approved";
         } else if ("reject".equalsIgnoreCase(action)) {
             newStatus = "Rejected";
+        } else if ("pending".equalsIgnoreCase(action)) {
+            newStatus = "Pending";
         }
 
         if (idStr != null && newStatus != null) {
