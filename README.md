@@ -19,7 +19,8 @@ A software engineering project designed to help library students submit and mana
 1. Users log in and submit tickets describing issues or questions.
 2. Staff and admins view tickets, provide responses, and resolve them.
 3. The system tracks ticket status automatically for efficient management.
-
+   
+https://github.com/Chamidu2k04/Library-Helpdesk-System/blob/main/Screenshots/Screenshot%202025-10-02%20185929.png?raw=true
 
 ## User Screenshots
 
